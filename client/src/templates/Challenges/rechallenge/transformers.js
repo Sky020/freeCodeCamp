@@ -92,7 +92,7 @@ async function loadPresetReact() {
     );
   /* eslint-enable no-inline-comments */
   babelOptionsJSX = {
-    plugins: ['loopProtection'],
+    plugins: ['testLoopProtection'],
     presets: [presetEnv, presetReact]
   };
 }
@@ -133,10 +133,12 @@ function tryTransform(wrap = identity) {
 }
 
 const babelTransformer = options => {
+  console.log('babelTransformer', options);
   return cond([
     [
       testJS,
       async code => {
+        console.log('testJS: ', code);
         await loadBabel();
         await loadPresetEnv();
         const babelOptions = getBabelOptions(options);
@@ -149,6 +151,7 @@ const babelTransformer = options => {
     [
       testJSX,
       async code => {
+        console.log('testJSX: ', code);
         await loadBabel();
         await loadPresetReact();
         return flow(
@@ -168,6 +171,7 @@ function getBabelOptions({ preview = false, protect = true }) {
   let options = babelOptionsJSBase;
   // we always protect the preview, since it evaluates as the user types and
   // they may briefly have infinite looping code accidentally
+  console.log(protect, preview);
   if (protect) {
     options = preview ? babelOptionsJSPreview : babelOptionsJS;
   } else {

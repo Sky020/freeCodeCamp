@@ -187,12 +187,15 @@ function* previewChallengeSaga({ flushLogs = true } = {}) {
     const challengeData = yield select(challengeDataSelector);
 
     if (canBuildChallenge(challengeData)) {
+      console.log('canBuildChallenge: ', challengeData);
       const challengeMeta = yield select(challengeMetaSelector);
       const protect = isLoopProtected(challengeMeta);
+      console.log('protect', protect);
       const buildData = yield buildChallengeData(challengeData, {
         preview: true,
         protect
       });
+      console.log(buildData);
       // evaluate the user code in the preview frame or in the worker
       if (challengeHasPreview(challengeData)) {
         const document = yield getContext('document');

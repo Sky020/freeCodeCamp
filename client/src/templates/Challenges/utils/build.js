@@ -139,6 +139,7 @@ export function buildDOMChallenge({ files, required = [], template = '' }) {
   const finalRequires = [...globalRequires, ...required, ...frameRunner];
   const loadEnzyme = Object.keys(files).some(key => files[key].ext === 'jsx');
   const toHtml = [jsToHtml, cssToHtml];
+  console.log('buildDOMChallenge: ', files, toHtml);
   const pipeLine = composeFunctions(...getTransformers(), ...toHtml);
   const finalFiles = Object.keys(files)
     .map(key => files[key])
@@ -154,6 +155,7 @@ export function buildDOMChallenge({ files, required = [], template = '' }) {
 }
 
 export function buildJSChallenge({ files }, options) {
+  console.log('buildJSChallenge: ', options);
   const pipeLine = composeFunctions(...getTransformers(options));
 
   const finalFiles = Object.keys(files)
@@ -183,6 +185,7 @@ export function buildBackendChallenge({ url }) {
 
 export async function updatePreview(buildData, document, proxyLogger) {
   const { challengeType } = buildData;
+  // buildData.build, buildData.sources.index - actual code
 
   if (challengeType === challengeTypes.html) {
     await new Promise(resolve =>
