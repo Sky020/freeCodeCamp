@@ -190,7 +190,6 @@ function* previewChallengeSaga({ flushLogs = true } = {}) {
       console.log('canBuildChallenge: ', challengeData);
       const challengeMeta = yield select(challengeMetaSelector);
       const protect = isLoopProtected(challengeMeta);
-      console.log('protect', protect);
       const buildData = yield buildChallengeData(challengeData, {
         preview: true,
         protect
