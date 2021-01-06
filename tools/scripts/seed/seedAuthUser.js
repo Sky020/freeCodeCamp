@@ -152,42 +152,32 @@ MongoClient.connect(MONGOHQ_URL, { useNewUrlParser: true }, (err, client) => {
   const db = client.db('freecodecamp');
   const user = db.collection('user');
 
-  if (process.argv[2] === 'certUser') {
-    user.deleteOne({ _id: ObjectId('5fa2db00a25c1c1fa49ce067') }, err => {
+  user.deleteMany(
+    {
+      _id: {
+        $in: [
+          ObjectId('5bd30e0f1caf6ac3ddddddb5'),
+          ObjectId('5bd30e0f1caf6ac3ddddddb9'),
+          ObjectId('5fa2db00a25c1c1fa49ce067')
+        ]
+      }
+    },
+    err => {
       handleError(err, client);
-
       try {
-        user.insertOne(fullyCertifiedUser);
+        if (process.argv[2] === 'certUser') {
+          console.log(fullyCertifiedUser);
+          user.insertOne(fullyCertifiedUser);
+        } else {
+          user.insertOne(authUser);
+          user.insertOne(blankUser);
+        }
       } catch (e) {
         handleError(e, client);
       } finally {
         log('local auth user seed complete');
         client.close();
       }
-    });
-  } else {
-    user.deleteMany(
-      {
-        _id: {
-          $in: [
-            ObjectId('5bd30e0f1caf6ac3ddddddb5'),
-            ObjectId('5bd30e0f1caf6ac3ddddddb9')
-          ]
-        }
-      },
-      err => {
-        handleError(err, client);
-
-        try {
-          user.insertOne(authUser);
-          user.insertOne(blankUser);
-        } catch (e) {
-          handleError(e, client);
-        } finally {
-          log('local auth user seed complete');
-          client.close();
-        }
-      }
-    );
-  }
+    }
+  );
 });

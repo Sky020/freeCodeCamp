@@ -21,7 +21,7 @@ module.exports = {
   isFrontEndCert: true,
   isDataVisCert: true,
   isBackEndCert: true,
-  isFullStackCert: true,
+  isFullStackCert: false,
   isRespWebDesignCert: true,
   is2018DataVisCert: true,
   isFrontEndLibsCert: true,
